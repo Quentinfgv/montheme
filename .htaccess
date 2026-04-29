@@ -1,0 +1,37 @@
+# Configuration Apache pour le thème Impulse
+# Permet l'accès aux templates PHP personnalisés
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+# Autoriser l'accès direct aux templates PHP
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Route pour /clients
+RewriteRule ^clients/?$ clients.php [L,QSA]
+
+# Route pour /services
+RewriteRule ^services/?$ services.php [L,QSA]
+
+# Route pour /contact
+RewriteRule ^contact/?$ contact.php [L,QSA]
+
+# Règles WordPress standard (si WordPress est installé)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+# Autoriser l'accès aux fichiers PHP de template
+<FilesMatch "\.(php)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
+
+# Sécurité : Empêcher l'accès aux fichiers sensibles
+<FilesMatch "^(\.htaccess|\.git|\.gitignore|\.env|composer\.(json|lock)|package\.json)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>

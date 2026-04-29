@@ -81,14 +81,36 @@
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(0, 0, 0, 0.4);
             font-weight: 600;
             transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 5px;
         }
         
         header .main-navigation ul li a:hover,
+        header .main-navigation ul li a:focus,
         #masthead .main-navigation ul li a:hover,
-        .site-header .main-navigation ul li a:hover {
-            color: #11dd9e !important;
-            text-shadow: 0 2px 6px rgba(17, 221, 158, 0.5), 0 1px 3px rgba(0, 0, 0, 0.3);
-            transform: translateY(-1px);
+        #masthead .main-navigation ul li a:focus,
+        .site-header .main-navigation ul li a:hover,
+        .site-header .main-navigation ul li a:focus {
+            background: var(--mint-green) !important;
+            color: var(--dark-blue) !important;
+            text-shadow: none !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(17, 221, 158, 0.4);
+            font-weight: 700;
+            outline: none;
+        }
+        
+        header .main-navigation ul li a.active,
+        #masthead .main-navigation ul li a.active,
+        .site-header .main-navigation ul li a.active,
+        header .main-navigation .current-menu-item > a,
+        #masthead .main-navigation .current-menu-item > a,
+        .site-header .main-navigation .current-menu-item > a {
+            background: var(--mint-green) !important;
+            color: var(--dark-blue) !important;
+            text-shadow: none !important;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(17, 221, 158, 0.3);
         }
         
         /* Bouton actif avec effet de fusion */
@@ -259,6 +281,9 @@
             background: var(--mint-green) !important;
             color: var(--dark-blue) !important;
             outline: none;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(17, 221, 158, 0.4);
+            font-weight: 700;
         }
         
         #primary-menu a.active,
@@ -266,6 +291,8 @@
         .main-navigation .menu a.active {
             background: var(--mint-green) !important;
             color: var(--dark-blue) !important;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(17, 221, 158, 0.3);
         }
         
         #primary-menu .current-menu-item > a,
@@ -274,6 +301,8 @@
         .main-navigation .current_page_item > a {
             background: var(--mint-green) !important;
             color: var(--dark-blue) !important;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(17, 221, 158, 0.3);
         }
         
         /* Responsive - Menu mobile */
@@ -362,10 +391,10 @@
         
         .footer-col .logo {
             height: auto;
-            max-height: 50px;
+            max-height: 35px;
             width: auto;
             display: block;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         
         .footer-col h4 {

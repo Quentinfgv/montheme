@@ -322,4 +322,49 @@ function impulse_add_editable_content_styles() {
 }
 add_action('wp_head', 'impulse_add_editable_content_styles');
 
+// === SYSTÈME DE ROUTAGE POUR ACCÈS DIRECT AUX TEMPLATES ===
+
+// Fonction pour gérer le routage des pages personnalisées
+function impulse_custom_page_routing() {
+    // Vérifier si on est dans WordPress
+    if (!function_exists('is_admin')) {
+        return;
+    }
+    
+    // Ne pas interférer avec l'admin
+    if (is_admin()) {
+        return;
+    }
+    
+    // Récupérer l'URI de la requête
+    $request_uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+    $request_uri = trim($request_uri, '/');
+    
+    // Définir les routes et leurs templates correspondants
+    $routes = array(
+        'clients' => 'clients.php',
+        'services' => 'services.php',
+        'contact' => 'contact.php'
+    );
+    
+    // Vérifier si l'URI correspond à une de nos routes
+    foreach ($routes as $route => $template) {
+        // Vérifier si l'URI contient la route (ex: /clients ou /clients/)
+        if (strpos($request_uri, $route) === 0) {
+            // Vérifier que le fichier template existe
+            $template_path = get_template_directory() . '/' . $template;
+            if (file_exists($template_path)) {
+                // Si WordPress n'a pas déjà chargé une page, charger le template directement
+                if (!function_exists('is_page') || !is_page()) {
+                    // Inclure le template
+                    include($template_path);
+                    exit;
+                }
+            }
+            break;
+        }
+    }
+}
+add_action('template_redirect', 'impulse_custom_page_routing', 1);
+
 

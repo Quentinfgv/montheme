@@ -8,7 +8,6 @@
 get_header();
 
 // Afficher le contenu WordPress (éditable par les SEO)
-// Récupérer le contenu de la page de manière sécurisée
 global $post;
 if (isset($post) && isset($post->ID) && function_exists('get_post')) {
     $page_post = get_post($post->ID);
@@ -21,36 +20,6 @@ if (isset($post) && isset($post->ID) && function_exists('get_post')) {
         echo '</section>';
     }
 }
-
-// --- DONNÉES DE LA PAGE (Modifiable ici) ---
-
-// 1. Les Coordonnées
-$coordonnees = [
-    [
-        'titre' => 'ADRESSE',
-        'valeur' => 'Gymnase Auguste Delaune<br>2 rue de Nanteuil<br>93100 Montreuil, France',
-        'icone' => 'location_on',
-        'sens'  => 'normal'
-    ],
-    [
-        'titre' => 'TÉLÉPHONE',
-        'valeur' => '<a href="tel:0689611525">06 89 61 15 25</a><br>Benjamin Rousseau',
-        'icone' => 'phone',
-        'sens'  => 'inverse'
-    ],
-    [
-        'titre' => 'EMAIL',
-        'valeur' => '<a href="mailto:Contact@impulse-club.fr">Contact@impulse-club.fr</a>',
-        'icone' => 'email',
-        'sens'  => 'normal'
-    ]
-];
-
-// 2. Les Horaires
-$horaires = [
-    ['jour' => 'Lundi - Vendredi', 'heures' => '9h00 - 18h00'],
-    ['jour' => 'Samedi - Dimanche', 'heures' => 'Fermé']
-];
 
 // Traitement du formulaire
 $message_sent = false;
@@ -96,28 +65,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
 <style>
 /* === PAGE CONTACT CSS === */
 
-/* --- HERO --- */
-.hero {
+/* Variables */
+:root {
+    --emerald: #11dd9e;
+    --dark-blue: #0a1a2b;
+    --blue: #1B3083;
+}
+
+/* Hero Section */
+#hero {
     text-align: center;
     padding: 100px 0 80px;
     background: linear-gradient(135deg, rgba(1, 13, 59, 1) 0%, rgba(27, 48, 131, 1) 50%, rgba(17, 221, 158, 0.3) 100%);
     color: #ffffff;
-    position: relative;
 }
 
-.hero h1 {
+#hero h1 {
     font-size: 4rem;
     text-transform: uppercase;
     margin-bottom: 20px;
     letter-spacing: 3px;
-    color: #ffffff;
     font-weight: 900;
 }
 
-.hero-text {
+#hero p {
     max-width: 800px;
     margin: 0 auto;
     color: #ffffff;
@@ -125,227 +102,146 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     line-height: 1.8;
 }
 
-/* --- SECTION PRINCIPALE (2 COLONNES) --- */
-.contact-main-section {
+/* Logos Row */
+.logos-row {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 20px 0;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 30px;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.client-logo {
+    height: 55px;
+    width: auto;
+    filter: brightness(0) invert(1);
+    opacity: 0.9;
+    transition: opacity 0.3s;
+}
+
+.client-logo:hover {
+    opacity: 1;
+}
+
+/* Contact Section */
+.contact-section {
     padding: 80px 0;
     background: #ffffff;
 }
 
-.contact-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* --- COLONNE GAUCHE - COORDONNÉES --- */
-.contact-info-col {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-}
-
-.coordonnees-title {
-    font-size: 2.5rem;
-    text-transform: uppercase;
-    margin-bottom: 30px;
-    color: #160049;
-    font-weight: 900;
-}
-
-.coordonnees-title span {
-    color: #11dd9e;
-}
-
-.coordonnee-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-.coordonnee-icon {
-    flex-shrink: 0;
+/* Icon Box */
+.icon-box {
     width: 50px;
     height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
-.coordonnee-icon .material-symbols-outlined {
+.icon-box .material-symbols-outlined {
     font-size: 2.5rem;
-    color: #11dd9e;
+    color: var(--emerald);
 }
 
-.coordonnee-text h3 {
-    font-size: 1rem;
-    font-weight: 700;
-    color: #160049;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+/* Text Emerald */
+.text-emerald {
+    color: var(--emerald) !important;
 }
 
-.coordonnee-text .valeur {
-    font-size: 1rem;
-    color: #3100a5;
-    line-height: 1.6;
-}
-
-.coordonnee-text .valeur a {
-    color: #3100a5;
-    text-decoration: none;
-}
-
-.coordonnee-text .valeur a:hover {
-    color: #11dd9e;
-}
-
-/* Horaires */
-.horaires-box {
+/* Opening Hours Box */
+.opening-hours {
     background: linear-gradient(135deg, rgba(1, 13, 59, 1), rgba(27, 48, 131, 1));
-    padding: 25px;
-    border-radius: 10px;
-    border: 2px solid #11dd9e;
-    margin-top: 20px;
+    border: 2px solid var(--emerald);
 }
 
-.horaires-box h4 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #11dd9e;
-    margin-bottom: 15px;
+.opening-hours h5 {
+    color: var(--emerald);
     text-transform: uppercase;
 }
 
-.horaires-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-}
-
-.horaires-row:last-child {
-    border-bottom: none;
-}
-
-/* Carte */
-.map-container-contact {
+/* Map Container */
+.map-container {
     margin-top: 30px;
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
-.map-container-contact iframe {
+.img-map {
     width: 100%;
     height: 350px;
-    border: none;
+    object-fit: cover;
 }
 
-/* --- COLONNE DROITE - FORMULAIRE --- */
-.contact-form-col {
-    display: flex;
-    flex-direction: column;
-}
-
+/* Form Container */
 .form-container {
     background: linear-gradient(135deg, rgba(1, 13, 59, 1), rgba(27, 48, 131, 1));
-    padding: 50px 40px;
-    border-radius: 20px;
-    border: 2px solid #11dd9e;
+    border: 2px solid var(--emerald);
 }
 
-.form-title {
-    font-size: 2.5rem;
+.form-container h2 {
     color: #ffffff;
-    margin-bottom: 30px;
-    text-transform: uppercase;
     font-weight: 900;
+    text-transform: uppercase;
     line-height: 1.2;
 }
 
-.form-title span {
-    color: #11dd9e;
-}
-
-.form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-label {
-    display: block;
-    font-weight: 600;
+.form-container .form-label {
     color: #ffffff;
-    margin-bottom: 8px;
+    font-weight: 600;
     font-size: 0.9rem;
+    margin-bottom: 8px;
 }
 
-.form-control,
-.form-select {
-    width: 100%;
-    padding: 15px;
+.form-container .form-control,
+.form-container .form-select {
+    background: rgba(255, 255, 255, 0.1);
     border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 10px;
-    font-family: inherit;
-    font-size: 1rem;
-    transition: all 0.3s;
-    background: rgba(255, 255, 255, 0.1);
     color: #ffffff;
-    box-sizing: border-box;
+    padding: 15px;
+    transition: all 0.3s;
 }
 
-.form-control::placeholder {
+.form-container .form-control::placeholder {
     color: rgba(255, 255, 255, 0.6);
 }
 
-.form-select option {
+.form-container .form-control:focus,
+.form-container .form-select:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--emerald);
+    color: #ffffff;
+    outline: none;
+    box-shadow: none;
+}
+
+.form-container .form-select option {
     background: #010d3b;
     color: #ffffff;
 }
 
-.form-control:focus,
-.form-select:focus {
-    outline: none;
-    border-color: #11dd9e;
-    background: rgba(255, 255, 255, 0.15);
-}
-
-.btn-submit {
-    background: #11dd9e;
-    color: #050a19;
-    padding: 18px 40px;
-    border: none;
-    border-radius: 30px;
+/* Button Emerald */
+.btn-emerald {
+    background-color: var(--emerald);
+    color: var(--dark-blue);
     font-weight: 800;
-    font-size: 1rem;
     text-transform: uppercase;
-    cursor: pointer;
+    border: none;
     transition: all 0.3s;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
 }
 
-.btn-submit:hover {
-    background: #ffffff;
-    color: #050a19;
+.btn-emerald:hover {
+    background-color: #ffffff;
+    color: var(--dark-blue);
     transform: translateY(-2px);
 }
 
+/* Alerts */
 .alert {
     padding: 15px;
     margin-bottom: 20px;
@@ -353,16 +249,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 .alert-success {
-    background: #11dd9e;
-    color: #050a19;
+    background: var(--emerald);
+    color: var(--dark-blue);
+    border: none;
 }
 
 .alert-error {
     background: #ff4444;
     color: #ffffff;
+    border: none;
 }
 
-/* --- CTA BANNER --- */
+/* CTA Banner */
 .cta-banner {
     background: #11dd9e;
     color: #050A19;
@@ -375,6 +273,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     margin-bottom: 10px;
     text-transform: uppercase;
     font-weight: 900;
+    line-height: 1.2;
 }
 
 .cta-banner p {
@@ -396,201 +295,184 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 .btn-cta:hover {
     transform: scale(1.05);
+    color: #fff;
 }
 
-/* Zone de contenu éditable depuis l'éditeur WordPress */
-.editable-content-zone {
-    padding: 80px 0;
-    background-color: #ffffff;
-}
-.editable-content-zone .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-.editable-content-zone h1,
-.editable-content-zone h2,
-.editable-content-zone h3,
-.editable-content-zone h4 {
-    color: #1B3083;
-    margin-bottom: 20px;
-}
-.editable-content-zone p {
-    line-height: 1.8;
-    margin-bottom: 15px;
-    color: #333;
-}
-.editable-content-zone code {
-    background: #f5f5f5;
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-family: monospace;
-}
-.editable-content-zone pre {
-    background: #f5f5f5;
-    padding: 20px;
-    border-radius: 10px;
-    overflow-x: auto;
-    margin-bottom: 20px;
-}
-.editable-content-zone pre code {
-    background: none;
-    padding: 0;
-}
-
-/* --- RESPONSIVE --- */
-@media (max-width: 1024px) {
-    .contact-wrapper {
-        grid-template-columns: 1fr;
-        gap: 40px;
-    }
-    
-    .form-row {
-        grid-template-columns: 1fr;
-    }
-}
-
+/* Responsive */
 @media (max-width: 768px) {
-    .hero h1 {
+    #hero h1 {
         font-size: 2.5rem;
     }
     
-    .hero-text {
+    #hero p {
         font-size: 1rem;
         padding: 0 20px;
     }
     
-    .contact-main-section {
+    .contact-section {
         padding: 60px 0;
     }
     
     .form-container {
-        padding: 30px 20px;
-    }
-    
-    .coordonnees-title {
-        font-size: 2rem;
+        padding: 30px 20px !important;
     }
 }
 </style>
 
-<section class="hero">
-    <div class="container">
-        <h1>CONTACTEZ-NOUS !</h1>
-        <p class="hero-text">Un projet, une idée ou une ambition sportive ? Contactez-nous et donnons ensemble de l'élan à votre communication.</p>
+<section id="hero">
+    <div class="container hero-content">
+        <h1 style="color: #11dd9e;">CONTACTEZ-NOUS</h1>
+        <p>Un projet, une idée ou une ambition sportive ? Contactez-nous et donnons ensemble de l'élan à votre communication.</p>
     </div>
 </section>
 
-<section class="contact-main-section">
-    <div class="contact-wrapper">
-        <!-- COLONNE GAUCHE - COORDONNÉES -->
-        <div class="contact-info-col">
-            <h2 class="coordonnees-title">NOS <span>COORDONNÉES</span></h2>
+<section class="contact-section py-5 bg-white">
+    <div class="container py-lg-5">
+        <div class="row">
             
-            <?php foreach($coordonnees as $coord): ?>
-                <div class="coordonnee-item">
-                    <div class="coordonnee-icon">
-                        <span class="material-symbols-outlined"><?php echo $coord['icone']; ?></span>
+            <!-- COLONNE GAUCHE - COORDONNÉES -->
+            <div class="col-lg-5 pe-lg-5">
+                <h1 class="fw-bold mb-5" style="color: #0a1a2b;">NOS <span class="text-emerald fw-bold mb-5">COORDONNÉES</span></h1>
+
+                <div class="d-flex align-items-start mb-4">
+                    <div class="icon-box me-3">
+                        <span class="material-symbols-outlined">location_on</span>
                     </div>
-                    <div class="coordonnee-text">
-                        <h3><?php echo $coord['titre']; ?></h3>
-                        <div class="valeur"><?php echo $coord['valeur']; ?></div>
+                    <div>
+                        <h6 class="fw-bold mb-1" style="color: #0a1a2b;">ADRESSE</h6>
+                        <p class="text-muted">Gymnase Auguste Delaune<br>2 rue de Nanteuil, 93100 Montreuil, France</p>
                     </div>
                 </div>
-            <?php endforeach; ?>
-            
-            <!-- Horaires -->
-            <div class="horaires-box">
-                <h4>HORAIRES D'OUVERTURE</h4>
-                <?php foreach($horaires as $horaire): ?>
-                    <div class="horaires-row">
-                        <span><?php echo $horaire['jour']; ?></span>
-                        <span><?php echo $horaire['heures']; ?></span>
+
+                <div class="d-flex align-items-start mb-4">
+                    <div class="icon-box me-3">
+                        <span class="material-symbols-outlined">phone_enabled</span>
                     </div>
-                <?php endforeach; ?>
+                    <div>
+                        <h6 class="fw-bold mb-1 text-uppercase" style="color: #0a1a2b;">Téléphone</h6>
+                        <p class="text-muted">06 89 61 15 25<br>Benjamin Rousseau</p>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start mb-5">
+                    <div class="icon-box me-3">
+                        <span class="material-symbols-outlined">mail</span>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold mb-1" style="color: #0a1a2b;">EMAIL</h6>
+                        <p class="text-muted">
+                            <a href="mailto:Contact@impulse-club.fr" style="color: #6c757d; text-decoration: none;">Contact@impulse-club.fr</a>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="opening-hours p-4 text-white rounded-4 mb-4">
+                    <h5 class="fw-bold mb-3">HORAIRES D'OUVERTURE</h5>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Lundi - Vendredi</span>
+                        <span>9h00 - 18h00</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>Samedi - Dimanche</span>
+                        <span>Fermé</span>
+                    </div>
+                </div>
+
+                <div class="map-container rounded-4 overflow-hidden">
+                    <?php 
+                    $map_image = get_template_directory_uri() . '/img/localisation.jpeg';
+                    $map_image_fallback = get_template_directory_uri() . '/img/localisation.jpg';
+                    // Si aucune image n'existe, utiliser une iframe Google Maps en fallback
+                    ?>
+                    <?php if (file_exists(get_template_directory() . '/img/localisation.jpeg') || file_exists(get_template_directory() . '/img/localisation.jpg')): ?>
+                        <img src="<?php echo file_exists(get_template_directory() . '/img/localisation.jpeg') ? $map_image : $map_image_fallback; ?>" alt="Localisation - 2 Rue de Nanteuil, 93100 Montreuil" class="w-100 img-map">
+                    <?php else: ?>
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2627.4446857742396!2d2.4398871!3d48.8567031!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e612c0d7fb9f5f%3A0x6d0c4e9e3f3a8f1d!2s2%20Rue%20de%20Nanteuil%2C%2093100%20Montreuil!5e0!3m2!1sfr!2sfr!4v1700000000000"
+                            width="100%" 
+                            height="350" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"
+                            title="Carte Google Maps - 2 Rue de Nanteuil, 93100 Montreuil">
+                        </iframe>
+                    <?php endif; ?>
+                </div>
             </div>
-            
-            <!-- Carte -->
-            <div class="map-container-contact">
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2627.4446857742396!2d2.4398871!3d48.8567031!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e612c0d7fb9f5f%3A0x6d0c4e9e3f3a8f1d!2s2%20Rue%20de%20Nanteuil%2C%2093100%20Montreuil!5e0!3m2!1sfr!2sfr!4v1700000000000"
-                    width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
-            </div>
-        </div>
-        
-        <!-- COLONNE DROITE - FORMULAIRE -->
-        <div class="contact-form-col">
-            <div class="form-container">
-                <h2 class="form-title">ENVOYEZ-NOUS<br>UN <span>MESSAGE</span></h2>
 
-                <?php if ($message_sent): ?>
-                    <div class="alert alert-success">
-                        <p>Votre message a été envoyé avec succès! Nous vous répondrons dans les plus brefs délais.</p>
-                    </div>
-                <?php endif; ?>
-
-                <?php if ($error_message): ?>
-                    <div class="alert alert-error">
-                        <p><?php echo esc_html($error_message); ?></p>
-                    </div>
-                <?php endif; ?>
-
-                <form method="POST" action="#">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Nom *</label>
-                            <input type="text" name="nom" class="form-control" placeholder="Votre nom" required value="<?php echo isset($_POST['nom']) ? esc_attr($_POST['nom']) : ''; ?>">
+            <!-- COLONNE DROITE - FORMULAIRE -->
+            <div class="col-lg-7 mt-5 mt-lg-0">
+                <div class="form-container p-4 p-lg-5 rounded-5 text-white">
+                    <h2 class="fw-bold mb-4">ENVOYEZ-NOUS <br> UN <span class="text-emerald">MESSAGE</span></h2>
+                    
+                    <?php if ($message_sent): ?>
+                        <div class="alert alert-success">
+                            <p class="mb-0">Votre message a été envoyé avec succès! Nous vous répondrons dans les plus brefs délais.</p>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Prénom *</label>
-                            <input type="text" name="prenom" class="form-control" placeholder="Votre prénom" required value="<?php echo isset($_POST['prenom']) ? esc_attr($_POST['prenom']) : ''; ?>">
+                    <?php endif; ?>
+
+                    <?php if ($error_message): ?>
+                        <div class="alert alert-error">
+                            <p class="mb-0"><?php echo esc_html($error_message); ?></p>
                         </div>
-                    </div>
+                    <?php endif; ?>
+                    
+                    <form action="#" method="POST">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nom *</label>
+                                <input type="text" name="nom" class="form-control" placeholder="Votre nom" required value="<?php echo isset($_POST['nom']) ? esc_attr($_POST['nom']) : ''; ?>">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Prénom *</label>
+                                <input type="text" name="prenom" class="form-control" placeholder="Votre prénom" required value="<?php echo isset($_POST['prenom']) ? esc_attr($_POST['prenom']) : ''; ?>">
+                            </div>
+                        </div>
 
-                    <div class="form-group">
-                        <label class="form-label">Email *</label>
-                        <input type="email" name="email" class="form-control" placeholder="votre.email@exemple.fr" required value="<?php echo isset($_POST['email']) ? esc_attr($_POST['email']) : ''; ?>">
-                    </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email *</label>
+                            <input type="email" name="email" class="form-control" placeholder="votre.email@exemple.fr" required value="<?php echo isset($_POST['email']) ? esc_attr($_POST['email']) : ''; ?>">
+                        </div>
 
-                    <div class="form-group">
-                        <label class="form-label">Téléphone *</label>
-                        <input type="tel" name="telephone" class="form-control" placeholder="+33 1 23 45 67 89" required value="<?php echo isset($_POST['telephone']) ? esc_attr($_POST['telephone']) : ''; ?>">
-                    </div>
+                        <div class="mb-3">
+                            <label class="form-label">Téléphone *</label>
+                            <input type="tel" name="telephone" class="form-control" placeholder="+33 1 23 45 67 89" required value="<?php echo isset($_POST['telephone']) ? esc_attr($_POST['telephone']) : ''; ?>">
+                        </div>
 
-                    <div class="form-group">
-                        <label class="form-label">Entreprise / Organisation *</label>
-                        <input type="text" name="entreprise" class="form-control" placeholder="Votre entreprise" required value="<?php echo isset($_POST['entreprise']) ? esc_attr($_POST['entreprise']) : ''; ?>">
-                    </div>
+                        <div class="mb-3">
+                            <label class="form-label">Entreprise / Organisation *</label>
+                            <input type="text" name="entreprise" class="form-control" placeholder="Votre entreprise" required value="<?php echo isset($_POST['entreprise']) ? esc_attr($_POST['entreprise']) : ''; ?>">
+                        </div>
 
-                    <div class="form-group">
-                        <label class="form-label">Service concerné *</label>
-                        <select name="service" class="form-select" required>
-                            <option value="" disabled <?php echo !isset($_POST['service']) ? 'selected' : ''; ?>>Sélectionnez un service</option>
-                            <option value="strategie" <?php echo (isset($_POST['service']) && $_POST['service'] == 'strategie') ? 'selected' : ''; ?>>Stratégie de marque</option>
-                            <option value="digitale" <?php echo (isset($_POST['service']) && $_POST['service'] == 'digitale') ? 'selected' : ''; ?>>Communication digitale</option>
-                            <option value="media" <?php echo (isset($_POST['service']) && $_POST['service'] == 'media') ? 'selected' : ''; ?>>Production média</option>
-                            <option value="pack" <?php echo (isset($_POST['service']) && $_POST['service'] == 'pack') ? 'selected' : ''; ?>>Pack média</option>
-                            <option value="autre" <?php echo (isset($_POST['service']) && $_POST['service'] == 'autre') ? 'selected' : ''; ?>>Autre</option>
-                        </select>
-                    </div>
+                        <div class="mb-3">
+                            <label class="form-label">Service concerné *</label>
+                            <select name="service" class="form-select" required>
+                                <option value="" disabled <?php echo !isset($_POST['service']) ? 'selected' : ''; ?>>Sélectionnez un service</option>
+                                <option value="strategie" <?php echo (isset($_POST['service']) && $_POST['service'] == 'strategie') ? 'selected' : ''; ?>>Stratégie de marque</option>
+                                <option value="digitale" <?php echo (isset($_POST['service']) && $_POST['service'] == 'digitale') ? 'selected' : ''; ?>>Communication digitale</option>
+                                <option value="media" <?php echo (isset($_POST['service']) && $_POST['service'] == 'media') ? 'selected' : ''; ?>>Production média</option>
+                                <option value="pack" <?php echo (isset($_POST['service']) && $_POST['service'] == 'pack') ? 'selected' : ''; ?>>Pack média</option>
+                                <option value="autre" <?php echo (isset($_POST['service']) && $_POST['service'] == 'autre') ? 'selected' : ''; ?>>Autre</option>
+                            </select>
+                        </div>
 
-                    <div class="form-group">
-                        <label class="form-label">Message *</label>
-                        <textarea name="message" class="form-control" rows="4" placeholder="Décrivez-nous votre projet..." required><?php echo isset($_POST['message']) ? esc_html($_POST['message']) : ''; ?></textarea>
-                    </div>
+                        <div class="mb-4">
+                            <label class="form-label">Message *</label>
+                            <textarea name="message" class="form-control" rows="4" placeholder="Décrivez-nous votre projet..." required><?php echo isset($_POST['message']) ? esc_html($_POST['message']) : ''; ?></textarea>
+                        </div>
 
-                    <button type="submit" class="btn-submit">
-                        <span class="material-symbols-outlined">send</span>
-                        Envoyer le message
-                    </button>
-                </form>
+                        <button type="submit" class="btn btn-emerald w-100 py-3 fw-bold rounded-pill">
+                            <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px;">send</span>
+                            Envoyer le message
+                        </button>
+                    </form>
+                </div>
             </div>
+
         </div>
     </div>
 </section>
-
 
 <section class="cta-banner">
     <div class="container">

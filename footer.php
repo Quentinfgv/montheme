@@ -18,7 +18,9 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/logos/logo-impulse.png" alt="Impulse Logo" class="logo" style="margin-bottom: 25px;">
+                    <a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
+                        <img src="<?php echo get_template_directory_uri(); ?>/img/logo-impulse.png" alt="Impulse Logo" class="logo">
+                    </a>
                 </div>
 
                 <div class="footer-col">
